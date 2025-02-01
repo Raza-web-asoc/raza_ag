@@ -1,56 +1,41 @@
-const { ApolloServer, gql } = require('apollo-server-express');
-const { GraphQLUpload, graphqlUploadExpress } = require('graphql-upload');
-const express = require('express');
-const axios = require('axios');
-const FormData = require('form-data');
+import { ApolloServer } from 'apollo-server-express';
+import { graphqlUploadExpress } from 'graphql-upload';
+import express from 'express';
 
-const typeDefs = gql`
-  scalar Upload
+import { typeDefs as userTypeDefs } from './schemas/userSchemas.js';
+import { resolvers as userResolvers } from './resolvers/userResolvers.js';  
 
-  type Query {
-    _empty: String
-  }
+import { typeDefs as petTypeDefs } from './schemas/petsSchemas.js';
+import { resolvers as petResolvers } from './resolvers/petsResolvers.js';
 
-  type Mutation {
-    uploadImage(file: Upload!): String
-  }
-`;
+import { typeDefs as imagesTypeDefs } from './schemas/imagesSchemas.js';
+import { resolvers as imagesResolvers } from './resolvers/imagesResolvers.js';
 
-const resolvers = {
-  Upload: GraphQLUpload,
-  Query: {
-    _empty: () => "Hello, world!"
-  },
-  Mutation: {
-    uploadImage: async (_, { file }) => {
-      console.log("Received file:", file);
-      const { createReadStream, filename, mimetype } = await file;
-      const formData = new FormData();
-      formData.append('file', createReadStream(), { filename, contentType: mimetype });
+import { typeDefs as speciesTypeDefs } from './schemas/speciesSchemas.js';
+import { resolvers as speciesResolvers } from './resolvers/speciesResolvers.js';
 
-      try {
-        const response = await axios.post('http://localhost:3000/upload', formData, {
-          headers: formData.getHeaders(),
-        });
-        console.log("Upload response:", response.data);
-        return response.data.url;
-      } catch (error) {
-        console.error("Error uploading file:", error.message);
-        throw new Error('Error uploading file');
-      }
-    },
-  },
-};
+import { typeDefs as breedsTypeDefs } from './schemas/breedsSchemas.js';
+import { resolvers as breedsResolvers } from './resolvers/breedsResolvers.js';
+
+import { typeDefs as matchTypeDefs } from './schemas/matchSchemas.js';
+import { resolvers as matchResolvers } from './resolvers/matchResolvers.js';
 
 async function startServer() {
   const app = express();
+  
+  // Configurar la carga de archivos (graphql-upload)
   app.use(graphqlUploadExpress());
 
-  const server = new ApolloServer({ typeDefs, resolvers });
+  const server = new ApolloServer({
+    typeDefs: [userTypeDefs, petTypeDefs, imagesTypeDefs, speciesTypeDefs, breedsTypeDefs, matchTypeDefs], 
+    resolvers: [userResolvers, petResolvers, imagesResolvers, speciesResolvers, breedsResolvers, matchResolvers],
+  });
+  
   await server.start();
   server.applyMiddleware({ app });
 
   const PORT = process.env.PORT || 4000;
+
   app.listen(PORT, () => {
     console.log(`🚀 Server ready at http://localhost:${PORT}${server.graphqlPath}`);
   });
