@@ -3,7 +3,7 @@ import { graphqlUploadExpress } from 'graphql-upload';
 import express from 'express';
 
 import { typeDefs as userTypeDefs } from './schemas/userSchemas.js';
-import { resolvers as userResolvers } from './resolvers/userResolvers.js';  
+import { resolvers as userResolvers } from './resolvers/userResolvers.js';
 
 import { typeDefs as petTypeDefs } from './schemas/petsSchemas.js';
 import { resolvers as petResolvers } from './resolvers/petsResolvers.js';
@@ -20,17 +20,34 @@ import { resolvers as breedsResolvers } from './resolvers/breedsResolvers.js';
 import { typeDefs as matchTypeDefs } from './schemas/matchSchemas.js';
 import { resolvers as matchResolvers } from './resolvers/matchResolvers.js';
 
+import { typeDefs as chatTypeDefs } from './schemas/chatSchemas.js';
+import { resolvers as chatResolvers } from './resolvers/chatResolvers.js';
+
 async function startServer() {
   const app = express();
-  
+
   // Configurar la carga de archivos (graphql-upload)
   app.use(graphqlUploadExpress());
 
   const server = new ApolloServer({
-    typeDefs: [userTypeDefs, petTypeDefs, imagesTypeDefs, speciesTypeDefs, breedsTypeDefs, matchTypeDefs], 
-    resolvers: [userResolvers, petResolvers, imagesResolvers, speciesResolvers, breedsResolvers, matchResolvers],
+    typeDefs: [
+      userTypeDefs,
+      petTypeDefs,
+      imagesTypeDefs,
+      speciesTypeDefs,
+      breedsTypeDefs,
+      matchTypeDefs,
+      chatTypeDefs],
+    resolvers: [
+      userResolvers,
+      petResolvers,
+      imagesResolvers,
+      speciesResolvers,
+      breedsResolvers,
+      matchResolvers,
+      chatResolvers],
   });
-  
+
   await server.start();
   server.applyMiddleware({ app });
 

@@ -27,13 +27,22 @@ export const typeDefs = gql`
     password: String!
   }
 
+  input EditUserInput {
+  names: String
+  last_names: String
+  email: String
+  gender: String
+  birthday: String
+}
+
+
   type AuthData {
     access_token: String
     token_type: String
   }
 
   type Signup {
-    idUser: String
+    idUser: Int
   }
 
   type Query {
@@ -43,5 +52,6 @@ export const typeDefs = gql`
   type Mutation {
     signup(input: UserInput!): Signup
     signin(input: LoginInput!): AuthData
+    editUser(input: EditUserInput!, token: String!): String
   }
 `;

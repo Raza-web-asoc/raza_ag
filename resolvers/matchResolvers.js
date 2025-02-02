@@ -3,7 +3,7 @@ import axios from 'axios';
 export const resolvers = {
   Mutation: {
     match: async (_, { input, token }) => {
-      const { idmascota1, idmascota2, match } = input;
+      const { id_mascota1, id_mascota2, tipo_interaccion } = input;
       if (!token) {
         throw new Error("Token no encontrado")
       }
@@ -16,20 +16,18 @@ export const resolvers = {
       } catch (authError) {
         throw new Error(`Error de autenticación: ${authError.response.data.detail}`);
       }
-      console.log(`${process.env.API_MATCH_URL}/api/match`)
       try {
-        const response = await axios.post(`${process.env.API_MATCH_URL}/api/match`, {
-          idmascota1,
-          idmascota2,
-          match
+        const response = await axios.post(`${process.env.API_MATCH_URL}/api/swipe`, {
+          id_mascota1,
+          id_mascota2,
+          tipo_interaccion
         }, {
           headers: {
             Authorization: `Bearer ${token}`
           }
         })
-        return response.data.message
+        return response.data
       } catch (error) {
-        console.error(error)
         throw new Error("Error al crear el match")
       }
     },

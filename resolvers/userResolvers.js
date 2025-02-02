@@ -42,7 +42,7 @@ export const resolvers = {
       }
     },
     signup: async (_, { input }) => {
-      const {username,names,last_names,email,password,birthday,gender} = input;
+      const { username, names, last_names, email, password, birthday, gender } = input;
       try {
         const response = await axios.post(`${process.env.API_AUTH_URL}/signup`, {
           username,
@@ -56,10 +56,34 @@ export const resolvers = {
         return response.data;
       } catch (error) {
         if (error.response) {
-          throw new Error ("Error al registrar:", error.response.data.detail);
+          throw new Error("Error al registrar:", error.response.data.detail);
         } else {
-          throw new Error ("Error en la conexión:", error.message);
+          throw new Error("Error en la conexión:", error.message);
         }
+      }
+    },
+    editUser: async (_, { input, token }) => {
+      const { names, last_names, email, birthday, gender } = input;
+      try {
+        const response = await axios.put(
+          `${process.env.API_AUTH_URL}/user/update`,
+          {
+            names,
+            last_names,
+            email,
+            birthday,
+            gender
+          },
+          {
+            headers: {
+              Authorization: `Bearer ${token}`
+            }
+          }
+        );
+        return response.data.message;
+      } catch (error) {
+        //console.error(error);
+        throw new Error("Error al actualizar el perfil");
       }
     }
   },

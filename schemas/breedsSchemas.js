@@ -9,6 +9,6 @@ export const typeDefs = gql`
   }
 
   type Query {
-    breeds(id_raza: String): [Breeds]
+    breeds(id_raza: Int): [Breeds]
   }
 `;

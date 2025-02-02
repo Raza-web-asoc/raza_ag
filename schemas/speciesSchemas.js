@@ -7,6 +7,6 @@ export const typeDefs = gql`
   }
 
   type Query {
-    species(id_especie: String): [Species]
+    species(id_especie: Int): [Species]
   }
 `;

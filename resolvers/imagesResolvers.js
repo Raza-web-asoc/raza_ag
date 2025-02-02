@@ -6,34 +6,26 @@ export const resolvers = {
   Upload: GraphQLUpload,
   Query: {
     userImage: async (_, { idUser }) => {
-      const formData = new FormData();
-      formData.append("idUser", idUser);
-
       try {
-        const response = await axios.post(`${process.env.API_IMAGES_URL}/get-user-image`, formData, {
-          headers: {
-            "Content-Type": "multipart/form-data",
+        const response = await axios.get(`${process.env.API_IMAGES_URL}/get-user-image`, {
+          params: {
+            idUser
           },
         });
         return response.data.image_url;
       } catch (error) {
-        console.error("Error al obtener la imagen:", error);
         throw new Error("Error al obtener la imagen");
       }
     },
     petImages: async (_, { idPet }) => {
-      const formData = new FormData();
-      formData.append("idPet", idPet);
-
       try {
-        const response = await axios.post(`${process.env.API_IMAGES_URL}/get-pet-images`, formData, {
-          headers: {
-            "Content-Type": "multipart/form-data",
+        const response = await axios.get(`${process.env.API_IMAGES_URL}/get-pet-images`, {
+          params: {
+            idPet
           },
         });
         return response.data.images;
       } catch (error) {
-        console.error("Error al obtener las imagenes de la mascota:", error);
         throw new Error("Error al obtener las imagenes de la mascota");
       }
     }
@@ -50,16 +42,13 @@ export const resolvers = {
           headers: formData.getHeaders(),
         });
 
-        // Retornar la URL de la imagen subida
-        return response.data.url;
+        return response.data.message;
       } catch (error) {
         console.error("Error uploading file:", error.message);
         throw new Error('Error uploading file');
       }
     },
     uploadPetImages: async (_, { idPet, files }) => {
-      console.log("Recibido idPet:", idPet);
-      console.log("Recibidos archivos:", files);
 
       const formData = new FormData();
       formData.append("idPet", idPet);
