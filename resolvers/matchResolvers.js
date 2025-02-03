@@ -1,6 +1,16 @@
 import axios from 'axios';
 
 export const resolvers = {
+  Query: {
+    interactions_by_id: async (_, { id_mascota }) => {
+      try {
+        const response = await axios.get(`${process.env.API_MATCH_URL}/api/interaction/${id_mascota}`);
+        return response.data;
+      } catch (error) {
+        throw new Error("Error al obtener las interacciones")
+      }
+    }
+  },
   Mutation: {
     match: async (_, { input, token }) => {
       const { id_mascota1, id_mascota2, tipo_interaccion } = input;
