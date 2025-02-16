@@ -1,6 +1,8 @@
 services:
   graphql-server:
     build: .
+    container_name: raza-ag
+    command: sh -c "npm install && npm run dev"
     ports:
       - "4000:4000"
     volumes:
@@ -9,7 +11,6 @@ services:
       - NODE_ENV=development
     env_file:
       - .env
-    command: npm run dev
     networks:
       - autenticador_network
 
