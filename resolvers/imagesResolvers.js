@@ -12,9 +12,14 @@ export const resolvers = {
             idUser
           },
         });
+
+        if (response.status !== 200) {
+          throw new Error(`Error: ${response.status} - ${response.statusText}`);
+        }
+
         return response.data.image_url;
       } catch (error) {
-        throw new Error("Error al obtener la imagen");
+        throw new Error(error.response ? error.response.data.detail : error.message);
       }
     },
     petImages: async (_, { idPet }) => {
