@@ -82,8 +82,7 @@ export const resolvers = {
         );
         return response.data.message;
       } catch (error) {
-        //console.error(error);
-        throw new Error("Error al actualizar el perfil");
+        throw new Error(`Error al actualizar el perfil: ${error.message}`);
       }
     }
   },
