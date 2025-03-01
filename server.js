@@ -1,6 +1,7 @@
 import { ApolloServer } from 'apollo-server-express';
 import { graphqlUploadExpress } from 'graphql-upload';
 import express from 'express';
+import prometheusMiddleware from 'express-prometheus-middleware';
 
 import { typeDefs as userTypeDefs } from './schemas/userSchemas.js';
 import { resolvers as userResolvers } from './resolvers/userResolvers.js';
@@ -29,6 +30,13 @@ async function startServer() {
   // Configurar la carga de archivos (graphql-upload)
   app.use(graphqlUploadExpress());
 
+  // Configurar Prometheus para métricas
+  app.use(prometheusMiddleware({
+    metricsPath: '/metrics',
+    collectDefaultMetrics: true,
+    requestDurationBuckets: [0.1, 0.5, 1, 3, 5]
+  }));
+
   const server = new ApolloServer({
     typeDefs: [
       userTypeDefs,
@@ -55,6 +63,7 @@ async function startServer() {
 
   app.listen(PORT, () => {
     console.log(`🚀 Server ready at http://localhost:${PORT}${server.graphqlPath}`);
+    console.log(`📊 Metrics available at http://localhost:${PORT}/metrics`);
   });
 }
 
