@@ -10,5 +10,6 @@ export const typeDefs = gql`
 
   type Query {
     breeds(id_raza: Int): [Breeds]
+    breedsBySpecie(id_especie: Int!): [Breeds]
   }
 `;
