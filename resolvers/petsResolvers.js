@@ -30,6 +30,18 @@ export const resolvers = {
       } catch (error) {
         throw new Error(`Fallo en la consulta de mascota: ${error.message}`);
       }
+    },
+    petsForMatch: async (_, { id_usuario, id_especie }) => {
+        try {
+            const url = `${process.env.API_PETS_URL}/mascotas/especie/${id_especie}/usuario/${id_usuario}`;
+            const response = await axios.get(url);
+            if (response.status !== 200) {
+              throw new Error(`Error al obtener mascotas para match: ${response.statusText}`);
+            }
+            return response.data;
+        } catch (error) {
+            throw new Error(`Fallo en la consulta de mascotas para match: ${error.message}`);
+        }
     }
   },
   Mutation: {
@@ -39,9 +51,9 @@ export const resolvers = {
           throw new Error("Token de autenticación no proporcionado.");
         }
 
-        const { nombre_mascota, id_especie, id_raza, sexo, fecha_nacimiento } = input;
+        const { nombre_mascota,  id_raza, sexo, fecha_nacimiento } = input;
 
-        if (!nombre_mascota || !id_especie || !id_raza || !sexo || !fecha_nacimiento) {
+        if (!nombre_mascota  || !id_raza || !sexo || !fecha_nacimiento) {
           throw new Error("Todos los campos son obligatorios para registrar una mascota.");
         }
 
@@ -60,7 +72,6 @@ export const resolvers = {
           `${process.env.API_PETS_URL}/mascotas`,
           {
             nombre_mascota,
-            id_especie,
             id_raza,
             sexo,
             fecha_nacimiento,
