@@ -78,14 +78,7 @@ async function startServer() {
   });
 
   await server.start();
-  server.applyMiddleware({
-    app,
-    cors: {
-      origin: "*",
-      credentials: true,
-    }
-  });
-
+  server.applyMiddleware({ app });
 
   const PORT = process.env.PORT || 4000;
 
