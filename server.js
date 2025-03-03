@@ -81,7 +81,7 @@ async function startServer() {
   server.applyMiddleware({
     app,
     cors: {
-      origin: "http://34.41.178.29", // Permite solicitudes desde el frontend en el puerto 80
+      origin: "*",
       credentials: true,
     }
   });
