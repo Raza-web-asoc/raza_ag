@@ -78,7 +78,14 @@ async function startServer() {
   });
 
   await server.start();
-  server.applyMiddleware({ app });
+  server.applyMiddleware({
+    app,
+    cors: {
+      origin: "http://34.41.178.29", // Permite solicitudes desde el frontend en el puerto 80
+      credentials: true,
+    }
+  });
+
 
   const PORT = process.env.PORT || 4000;
 
