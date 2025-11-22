@@ -14,6 +14,15 @@ services:
     networks:
       - autenticador_network
 
+  tests:
+    build:
+      context: .
+      dockerfile: Dockerfile.test
+    container_name: raza-ag-tests
+    environment:
+      API_PETS_URL: "http://mocked-api"   
+    command: ["npm", "test"]
+
 networks:
   autenticador_network:
     external: true
