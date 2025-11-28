@@ -88,6 +88,40 @@ export const resolvers = {
       } catch (error) {
         throw new Error(`Fallo al registrar la mascota: ${error.message}`);
       }
-    }
+    },
+    //delete all mascotas for a user
+    // delete all mascotas for a user usando solo el token
+    deletePetsByUser: async (_, { token }) => {
+      try {
+        if (!token) {
+          throw new Error("Token de autenticación no proporcionado.");
+        }
+
+        // 1️⃣ Obtener el id del usuario desde el microservicio de auth
+        const authResponse = await axios.get(`${process.env.API_AUTH_URL}/token`, {
+          headers: { Authorization: `Bearer ${token}` },
+        });
+
+        const id_usuario = authResponse.data.id_user;
+        if (!id_usuario) {
+          throw new Error("No se pudo obtener el id del usuario desde el token");
+        }
+
+        // 2️⃣ Llamar al endpoint de mascotas para eliminar todas
+        const url = `${process.env.API_PETS_URL}/mascotas/usuario/${id_usuario}`;
+        const response = await axios.delete(url);
+
+        if (response.status !== 200) {
+          throw new Error(`Error al eliminar mascotas: ${response.statusText}`);
+        }
+
+        return { success: true, message: "Todas las mascotas eliminadas correctamente." };
+      } catch (error) {
+        throw new Error(`Fallo al eliminar mascotas: ${error.message}`);
+      }
+    },
+
+    
+    
   },
 };

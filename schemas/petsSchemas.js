@@ -29,5 +29,11 @@ export const typeDefs = gql`
 
   type Mutation {
     registerPet(input: PetInput!, token: String!): Pet
+    deletePetsByUser(token: String!): DeleteResponse
+  }
+
+  type DeleteResponse {
+    success: Boolean!
+    message: String
   }
 `;
