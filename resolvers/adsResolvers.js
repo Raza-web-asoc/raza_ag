@@ -5,7 +5,7 @@ export const resolvers = {
     ads: async (_, { user_id }) => {
       let url;
       try {
-        if (id_raza) {
+        if (user_id ) {
           url = `${process.env.API_ADS_URL}/adds?user_id=${user_id}`;
         } else {
           url = `${process.env.API_ADS_URL}/adds/`

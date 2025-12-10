@@ -24,6 +24,9 @@ import { resolvers as matchResolvers } from "./resolvers/matchResolvers.js";
 import { typeDefs as chatTypeDefs } from "./schemas/chatSchemas.js";
 import { resolvers as chatResolvers } from "./resolvers/chatResolvers.js";
 
+import {typeDefs as adsTypeDefs} from "./schemas/adsSchemas.js";
+import {resolvers as adsResolvers} from "./resolvers/adsResolvers.js";
+
 import client from "prom-client"; // Cliente Prometheus
 import cors from "cors";
 
@@ -58,6 +61,7 @@ async function startServer() {
 
   const server = new ApolloServer({
     typeDefs: [
+      adsTypeDefs,
       userTypeDefs,
       petTypeDefs,
       imagesTypeDefs,
@@ -67,6 +71,7 @@ async function startServer() {
       chatTypeDefs,
     ],
     resolvers: [
+      adsResolvers,
       userResolvers,
       petResolvers,
       imagesResolvers,

@@ -10,6 +10,6 @@ export const typeDefs = gql`
   }
 
   type Query {
-    ads(id_raza: Int): [Ad]
+    ads(user_id: Int): [Ad]
   }
 `;
