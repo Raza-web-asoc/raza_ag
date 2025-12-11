@@ -10,6 +10,7 @@ export const typeDefs = gql`
     gender: String
     birthday: String
     password: String
+    role: Int
   }
 
   input LoginInput {
@@ -19,12 +20,13 @@ export const typeDefs = gql`
 
   input UserInput {
     username: String!
-    names: String!
-    last_names: String!
+    names: String
+    last_names: String
     email: String!
-    gender: String!
-    birthday: String!
+    gender: String
+    birthday: String
     password: String!
+    role: Int
   }
 
   input EditUserInput {
