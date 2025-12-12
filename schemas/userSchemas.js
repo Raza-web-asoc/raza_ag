@@ -41,6 +41,7 @@ export const typeDefs = gql`
   type AuthData {
     access_token: String
     token_type: String
+    role: Int
   }
 
   type Signup {
